@@ -30,7 +30,7 @@ It manages the core entities of the port, including vessels, containers, consign
 
 ---
 
-### How to Initialize the Database
+## How to Initialize the Database
 
 Run the following command:
 
@@ -40,7 +40,7 @@ This command creates the database, builds all tables, and loads the sample data.
 
 ---
 
-### Test Database Relationships
+## Test Database Relationships
 
 Run the following command:
 
