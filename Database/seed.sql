@@ -1,3 +1,9 @@
+INSERT INTO staff (name, role, badge_code, active)
+VALUES
+('Dana Ruiz', 'dispatcher', 'BADGE-D01', 1),
+('Sam Okafor', 'customs_officer', 'BADGE-C01', 1),
+('Priya Nair', 'supervisor', 'BADGE-S01', 1);
+
 INSERT INTO vessels (vessel_name, imo_number, arrival_date, departure_date, status)
 VALUES
 ('Ever Glory', 'IMO1234567', '2026-07-20', NULL, 'Arrived'),
@@ -24,26 +30,29 @@ VALUES
 
 ('MSKU100004', 1, 2, 2, '20FT', 1, 'On Hold', '2026-07-20');
 
+-- officer_id: 2 = Sam Okafor (customs_officer)
 INSERT INTO customs_holds
-(container_id, hold_reason, hold_status, officer_name)
+(container_id, hold_reason, hold_status, officer_id)
 VALUES
-(3, 'Missing customs documents', 'Active', 'Officer Omar'),
+(3, 'Missing customs documents', 'Active', 2),
 
-(4, 'Hazardous materials inspection', 'Active', 'Officer Ali');
+(4, 'Hazardous materials inspection', 'Active', 2);
 
+-- requested_by: 1 = Dana Ruiz (dispatcher), approved_by: 3 = Priya Nair (supervisor)
 INSERT INTO release_orders
 (container_id, requested_by, approved_by, release_status, release_reason)
 VALUES
-(1, 'Dispatcher', 'Supervisor', 'Approved', 'Documents verified'),
+(1, 1, 3, 'Approved', 'Documents verified'),
 
-(3, 'Dispatcher', NULL, 'Pending', 'Waiting customs approval');
+(3, 1, NULL, 'Pending', 'Waiting customs approval');
 
+-- processed_by: 1 = Dana Ruiz (dispatcher, acting as gate officer)
 INSERT INTO gate_transactions
 (container_id, carrier_id, transaction_type, processed_by)
 VALUES
-(1, 1, 'OUT', 'Gate Officer'),
+(1, 1, 'OUT', 1),
 
-(2, 1, 'IN', 'Gate Officer');
+(2, 1, 'IN', 1);
 
 INSERT INTO vessel_manifest_items
 (vessel_id, container_id, manifest_status, notes)

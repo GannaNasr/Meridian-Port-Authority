@@ -1,6 +1,14 @@
 -- Meridian Port Authority Database Schema
 -- SQLite Database
 
+CREATE TABLE staff (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL CHECK(role IN ('dispatcher', 'customs_officer', 'supervisor')),
+    badge_code TEXT UNIQUE NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT 1
+);
+
 CREATE TABLE vessels (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     vessel_name TEXT NOT NULL,
@@ -48,24 +56,27 @@ CREATE TABLE customs_holds (
     container_id INTEGER NOT NULL,
     hold_reason TEXT NOT NULL,
     hold_status TEXT NOT NULL CHECK(hold_status IN ('Active', 'Released')),
-    officer_name TEXT NOT NULL,
+    officer_id INTEGER NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     released_at DATETIME,
 
-    FOREIGN KEY (container_id) REFERENCES containers(id)
+    FOREIGN KEY (container_id) REFERENCES containers(id),
+    FOREIGN KEY (officer_id) REFERENCES staff(id)
 );
 
 CREATE TABLE release_orders (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     container_id INTEGER NOT NULL,
-    requested_by TEXT NOT NULL,
-    approved_by TEXT,
+    requested_by INTEGER NOT NULL,
+    approved_by INTEGER,
     release_status TEXT NOT NULL CHECK(release_status IN ('Pending','Approved','Rejected')),
     release_reason TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     released_at DATETIME,
 
-    FOREIGN KEY (container_id) REFERENCES containers(id)
+    FOREIGN KEY (container_id) REFERENCES containers(id),
+    FOREIGN KEY (requested_by) REFERENCES staff(id),
+    FOREIGN KEY (approved_by) REFERENCES staff(id)
 );
 
 CREATE TABLE gate_transactions (
@@ -74,10 +85,11 @@ CREATE TABLE gate_transactions (
     carrier_id INTEGER NOT NULL,
     transaction_type TEXT NOT NULL CHECK(transaction_type IN ('IN','OUT')),
     transaction_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    processed_by TEXT NOT NULL,
+    processed_by INTEGER NOT NULL,
 
     FOREIGN KEY (container_id) REFERENCES containers(id),
-    FOREIGN KEY (carrier_id) REFERENCES trucking_companies(id)
+    FOREIGN KEY (carrier_id) REFERENCES trucking_companies(id),
+    FOREIGN KEY (processed_by) REFERENCES staff(id)
 );
 
 CREATE TABLE vessel_manifest_items (

@@ -1,6 +1,11 @@
 import sqlite3
+import os
 
 DB_NAME = "meridian_port.db"
+
+if os.path.exists(DB_NAME):
+    os.remove(DB_NAME)
+
 
 connection = sqlite3.connect(DB_NAME)
 
