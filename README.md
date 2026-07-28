@@ -5,7 +5,7 @@ Database
 
 The project uses SQLite as the database engine because it is lightweight, portable, and requires no separate server installation.
 
-Database Components
+###Database Components
 
 - schema.sql: Creates all database tables and defines relationships.
 - seed.sql: Inserts sample data, including normal and edge-case scenarios.
@@ -14,7 +14,7 @@ Database Components
 - ERD.png: Entity Relationship Diagram illustrating the database structure.
 - test_relationships.py: Verifies that foreign key relationships between tables work correctly.
 
-Database Features
+###Database Features
 
 - Relational database design using primary and foreign keys.
 - Sample data covering both normal operations and edge cases.
